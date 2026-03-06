@@ -32,11 +32,11 @@ export class NoteController {
   // GET /api/notes/:id
   getById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const note = await this.service.getNoteById(req.params.id);
-      if (!note) throw new AppError('Note introuvable', 404);
-      sendSuccess(res, note);
+        const note = await this.service.getNoteById(String(req.params.id));
+        if (!note) throw new AppError('Note introuvable', 404);
+        sendSuccess(res, note);
     } catch (err) {
-      next(err);
+        next(err);
     }
   };
 
@@ -53,33 +53,35 @@ export class NoteController {
   // PUT /api/notes/:id
   update = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const note = await this.service.updateNote(req.params.id, req.body);
-      if (!note) throw new AppError('Note introuvable', 404);
-      sendSuccess(res, note);
+        const note = await this.service.updateNote(String(req.params.id), req.body);
+        if (!note) throw new AppError('Note introuvable', 404);
+        sendSuccess(res, note);
     } catch (err) {
-      next(err);
+        next(err);
     }
   };
 
   // DELETE /api/notes/:id
-  delete = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    delete = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const deleted = await this.service.deleteNote(req.params.id);
-      if (!deleted) throw new AppError('Note introuvable', 404);
-      sendSuccess(res, { message: 'Note supprimée' });
+        const id      = String(req.params.id);
+        const deleted = await this.service.deleteNote(id);
+        if (!deleted) throw new AppError('Note introuvable', 404);
+        sendSuccess(res, { message: 'Note supprimée' });
     } catch (err) {
-      next(err);
+        next(err);
     }
-  };
+    };
 
-  // PATCH /api/notes/:id/pin
-  togglePin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    // PATCH /api/notes/:id/pin
+    togglePin = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const note = await this.service.togglePin(req.params.id);
-      if (!note) throw new AppError('Note introuvable', 404);
-      sendSuccess(res, note);
+        const id   = String(req.params.id);
+        const note = await this.service.togglePin(id);
+        if (!note) throw new AppError('Note introuvable', 404);
+        sendSuccess(res, note);
     } catch (err) {
-      next(err);
+        next(err);
     }
-  };
+    };
 }
